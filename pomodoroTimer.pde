@@ -1,6 +1,5 @@
 String currentDateString = str(year()) + "-" + str(month()) + "-" + str(day());
 int currentDateInt = int(str(year()) + str(month()) +str(day()));
-int[] currentTime = {hour(), minute(), second()};
 String currentTimeString;
 boolean createNewSession = false;
 Pomodoro pomodoro;
@@ -13,10 +12,10 @@ public static int study = 5;
 public static int shortBreak = 5;
 public static int longBreak = 10;
 
-int buttonPositionX = 50;
-int buttonPositionY = 50;
-int buttonSizeX = 50;
-int buttonSizeY = 100;
+int pomodoroButtonX = 50;
+int pomodoroButtonY = 400;
+int buttonSizeX = 170;
+int buttonSizeY = 50;
 
 void setup() {
   size(500, 500);
@@ -25,23 +24,24 @@ void setup() {
   textFont(font);
   text(currentDateString, width/2-32*3, height/2);
   sine = new SinOsc(this);
-  button = new Button(buttonPositionX, buttonPositionX, buttonSizeX, buttonSizeY);
+  button = new Button(pomodoroButtonX, pomodoroButtonY, buttonSizeX, buttonSizeY, "Pomodoro");
 }
 
 void draw() {
   background(211);
   button.drawButton();
-  currentTime[0] = hour();
-  currentTime[1] = minute();
-  currentTime[2] = second();
 
-  currentTimeString = currentDateString + ", " + createTimeString(currentTime);
+  currentTimeString = currentDateString + ", " + createTimeString(createTimeStamp());
   text(currentTimeString, width/2-32*3, height/2);
 
-  if (button.CheckButtonPressed()) {
-    pomodoro = new Pomodoro(createTimeStamp(), study);
+  //Check if a new session is started
+  if (mousePressed == true) {
+    if (button.CheckButtonPressed()) {
+      pomodoro = new Pomodoro(createTimeStamp(), study);
+    }
   }
 
+  //If there exists a pomodoro and the pass has not ended
   if (!(pomodoro == null) && !(pomodoro.CheckIfPassEnded(createTimeStamp()))) {
     text(createTimeString(pomodoro.deltaTime), width/2-32*3, height/2+32*2);
   }
@@ -53,14 +53,15 @@ void draw() {
   }
 }
 
-int[] createTimeStamp() {
-  int[] currentTime = {hour(), minute(), second()};
-  return currentTime;
-}
-
 String createTimeString(int[] time) {
   String timeString = str(time[0]) + ":" + str(time[1]) + ":" + str(time[2]);
   return timeString;
+}
+
+//This function returns an array of integers {currentHour, currentMinute, currentSeconds}
+int[] createTimeStamp() {
+  int[] currentTime = {hour(), minute(), second()};
+  return currentTime;
 }
 
 /*
