@@ -8,9 +8,9 @@ Button button;
 import processing.sound.*;
 SinOsc sine;
 
-public static int study = 5;
-public static int shortBreak = 5;
-public static int longBreak = 10;
+public static int[] study = {0,1,5};
+public static int[] shortBreak = {0,5,0};
+public static int[] longBreak = {0,10,0};
 
 int pomodoroButtonX = 50;
 int pomodoroButtonY = 400;
